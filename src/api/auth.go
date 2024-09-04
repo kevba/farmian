@@ -16,14 +16,14 @@ func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString := c.Request.Header.Get("Authorization")
 		if tokenString == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Missing authorization header"})
+			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
 		tokenString = tokenString[len("Bearer "):]
 
 		err := verifyToken(tokenString)
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization invalid"})
+			c.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
 		c.Next()
