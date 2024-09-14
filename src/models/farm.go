@@ -3,8 +3,8 @@ package models
 import "github.com/google/uuid"
 
 type Farm struct {
-	ID     uint32 `json:"id"`
-	UserID uint32 `json:"userId"`
+	ID     string `json:"id"`
+	UserID string `json:"userId"`
 
 	Name     string `json:"name"`
 	Location [2]int `json:"location"`
@@ -13,18 +13,22 @@ type Farm struct {
 	PotatoStock int `json:"potato"`
 	CornStock   int `json:"corn"`
 
-	BarnLevel int `json:"barnLevel"`
+	Modifiers []string `json:"modifiers"`
+
+	// Modifier controlled
+	MaxStorage int `json:"maxStorage"`
 }
 
-func NewBarn(name string, location [2]int, userId uint32) *Farm {
+func NewFarm(name string, location [2]int, userId string) *Farm {
 	return &Farm{
-		ID:          uuid.New().ID(),
+		ID:          uuid.New().String(),
 		UserID:      userId,
 		Name:        name,
 		Location:    location,
 		WheatStock:  0,
 		PotatoStock: 0,
 		CornStock:   0,
-		BarnLevel:   0,
+		MaxStorage:  0,
+		Modifiers:   []string{farmModifiers["BARN_LEVEL_0"].ID()},
 	}
 }
